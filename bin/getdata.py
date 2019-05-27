@@ -50,14 +50,14 @@ def convert_nightscout(entries, start_time=None):
 		author = NS_AUTHOR
 
 		if entry["glucose"] and entry["is_sensor"]:
-			print(time.timestamp*1000)
 			glucose = entry["glucoseInCurrentUnit"] if entry["glucoseInCurrentUnit"] and entry["us_units"] else to_mgdl(
 				entry["glucose"])
 			dat = {
 				"sgv": glucose,
 				"type": "sgv",
 				"direction": "Flat",
-				"date": time.timestamp*1000
+				"date": time.timestamp*1000,
+				"enteredBy": author
 			}
 			#out.append(dat)
 		else:
@@ -131,7 +131,7 @@ def main():
 	ns_format = convert_nightscout(entries["logEntryList"], ns_last)
 
 	print("Converted", len(ns_format), "entries to Nightscout format")
-	print(ns_format)
+	#print(ns_format)
 
 	print("Uploading", len(ns_format), "entries to Nightscout...")
 	upload_nightscout(ns_format)
